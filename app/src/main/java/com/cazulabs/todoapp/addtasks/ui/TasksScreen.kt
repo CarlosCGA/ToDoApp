@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -35,39 +36,44 @@ import androidx.compose.ui.window.Dialog
 @Composable
 fun TasksScreen(tasksViewModel: TasksViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
-        var isVisibleAddTaskDialog by rememberSaveable {
-            mutableStateOf(false)
-        }
+        val showDialog: Boolean by tasksViewModel.showDialog.observeAsState(initial = false)
 
         FABAddTask(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(bottom = 16.dp, end = 16.dp)
-        ) {
-            isVisibleAddTaskDialog = true
-        }
+                .padding(bottom = 16.dp, end = 16.dp),
+            tasksViewModel
+        )
 
-        DialogAddTask(isVisibleAddTaskDialog) { isVisibleAddTaskDialog = false }
+        DialogAddTask(
+            showDialog,
+            onDismiss = { tasksViewModel.onDialogClose() },
+            onTaskAdded = { newTask -> tasksViewModel.onTaskAdded(newTask) }
+        )
     }
 }
 
 @Composable
-fun FABAddTask(modifier: Modifier, onClick: () -> Unit) {
+fun FABAddTask(modifier: Modifier, tasksViewModel: TasksViewModel) {
     FloatingActionButton(
         modifier = modifier,
-        onClick = { onClick.invoke() }, shape = CircleShape
+        onClick = { tasksViewModel.onShowDialogClick() }, shape = CircleShape
     ) {
         Icon(imageVector = Icons.Filled.Add, contentDescription = "Add task")
     }
 }
 
 @Composable
-fun DialogAddTask(isVisibleAddTaskDialog: Boolean, onDismiss: () -> Unit) {
+fun DialogAddTask(
+    showDialog: Boolean,
+    onDismiss: () -> Unit,
+    onTaskAdded: (String) -> Unit
+) {
     var newTask by rememberSaveable {
         mutableStateOf("")
     }
 
-    if (isVisibleAddTaskDialog) {
+    if (showDialog) {
         Dialog(onDismissRequest = { onDismiss.invoke() }) {
             Box(
                 modifier = Modifier
@@ -95,7 +101,7 @@ fun DialogAddTask(isVisibleAddTaskDialog: Boolean, onDismiss: () -> Unit) {
 
                     Spacer(modifier = Modifier.size(24.dp))
 
-                    Button(onClick = { onDismiss.invoke() }) {
+                    Button(onClick = { onTaskAdded.invoke(newTask) }) {
                         Text(text = "Add task")
                     }
                 }
@@ -107,5 +113,5 @@ fun DialogAddTask(isVisibleAddTaskDialog: Boolean, onDismiss: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDialogAddTask() {
-    DialogAddTask(true, {})
+    DialogAddTask(true, {}, {})
 }
