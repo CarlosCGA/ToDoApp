@@ -81,8 +81,13 @@ fun ItemTask(taskModel: TaskModel, tasksViewModel: TasksViewModel) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         elevation = CardDefaults.elevatedCardElevation()
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = taskModel.isDone, onCheckedChange = { })
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = taskModel.isDone,
+                onCheckedChange = { tasksViewModel.onCheckBoxSelected(taskModel) })
             Text(modifier = Modifier.padding(4.dp), text = taskModel.task)
         }
 

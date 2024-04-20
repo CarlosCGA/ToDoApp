@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.cazulabs.todoapp.addtasks.ui.model.TaskModel
 import javax.inject.Inject
 
-class TasksViewModel @Inject constructor(): ViewModel() {
+class TasksViewModel @Inject constructor() : ViewModel() {
 
     private val _showDialog = MutableLiveData<Boolean>()
     val showDialog: LiveData<Boolean> = _showDialog
@@ -28,4 +28,10 @@ class TasksViewModel @Inject constructor(): ViewModel() {
         _tasks.add(TaskModel(task = task))
     }
 
+    fun onCheckBoxSelected(taskModel: TaskModel) {
+        val index = _tasks.indexOf(taskModel)
+        _tasks[index] = _tasks[index].let { task ->
+            task.copy(isDone = !task.isDone)
+        }
+    }
 }
