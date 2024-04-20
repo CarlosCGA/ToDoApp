@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun TasksScreen() {
+fun TasksScreen(tasksViewModel: TasksViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         var isVisibleAddTaskDialog by rememberSaveable {
             mutableStateOf(false)
@@ -108,10 +108,4 @@ fun DialogAddTask(isVisibleAddTaskDialog: Boolean, onDismiss: () -> Unit) {
 @Composable
 fun PreviewDialogAddTask() {
     DialogAddTask(true, {})
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewTasksScreen() {
-    TasksScreen()
 }

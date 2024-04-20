@@ -69,4 +69,8 @@ dependencies {
     //DAGGER HILT
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    //LIVEDATA
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.runtime.livedata
 }
