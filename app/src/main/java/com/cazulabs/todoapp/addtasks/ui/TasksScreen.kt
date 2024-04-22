@@ -1,5 +1,6 @@
 package com.cazulabs.todoapp.addtasks.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -69,8 +70,10 @@ fun TasksList(tasksViewModel: TasksViewModel) {
     val myTasks: List<TaskModel> = tasksViewModel.tasks
 
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(myTasks, key = { task -> task.id }) { task ->
-            ItemTask(taskModel = task, tasksViewModel = tasksViewModel)
+        Log.d("CARLOS", "LAZY COLUMN RELOAD **********************************************")
+        items(myTasks, key = { task -> task.id }) { taskModel ->
+            Log.d("CARLOS", taskModel.toString())
+            ItemTask(taskModel = taskModel, tasksViewModel = tasksViewModel)
         }
     }
 }

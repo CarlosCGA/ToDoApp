@@ -5,4 +5,8 @@ data class TaskModel(
     val task: String,
     val isDone: Boolean = false
 ) {
+
+    override fun toString(): String {
+        return "TaskModel(id=$id, task='$task', isDone=$isDone)"
+    }
 }

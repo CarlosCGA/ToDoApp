@@ -1,5 +1,6 @@
 package com.cazulabs.todoapp.addtasks.ui
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,6 +27,7 @@ class TasksViewModel @Inject constructor() : ViewModel() {
     fun onTaskAdded(task: String) {
         onDialogClose()
         _tasks.add(TaskModel(task = task))
+        Log.d("CARLOS", "NEW SIZE -> ${_tasks.size}. LAST ELEMENT -> ${_tasks.last().task}")
     }
 
     fun onCheckBoxSelected(taskModel: TaskModel) {
@@ -33,10 +35,27 @@ class TasksViewModel @Inject constructor() : ViewModel() {
         _tasks[index] = _tasks[index].let { task ->
             task.copy(isDone = !task.isDone)
         }
+        Log.d("CARLOS", "ELEMENT $index -> ${_tasks[index].task} is ${_tasks[index].isDone}")
     }
 
     fun onRemoveTask(taskModel: TaskModel) {
+        Log.d("CARLOS", "onRemoveTask task.size -> ${_tasks.size}")
+        Log.d("CARLOS", "onRemoveTask task to remove -> $taskModel")
         val task = _tasks.find { task -> task.id == taskModel.id }
+
+        if (task != null)
+            Log.d("CARLOS", "onRemoveTask TRUE")
+        else
+            Log.d("CARLOS", "onRemoveTask FALSE")
+
+        var removeTask = TaskModel(task = "NULL")
+        for(task: TaskModel in _tasks)
+            if (task.id == taskModel.id) {
+                Log.d("CARLOS", "FIND")
+                removeTask = task
+            }
+        Log.d("CARLOS", "onRemoveTaskV2 -> ${removeTask.task}")
+
         _tasks.remove(task)
     }
 }
