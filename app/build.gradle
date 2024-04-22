@@ -73,4 +73,9 @@ dependencies {
     //LIVEDATA
     implementation libs.androidx.lifecycle.runtime.ktx
     implementation libs.androidx.runtime.livedata
+
+    //ROOM
+    implementation libs.androidx.room.runtime
+    kapt libs.androidx.room.compiler
+    implementation libs.androidx.room.ktx
 }
